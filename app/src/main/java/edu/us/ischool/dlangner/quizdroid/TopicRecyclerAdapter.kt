@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.view.View
 import kotlinx.android.synthetic.main.list_item_view.view.*
 
-class TopicRecyclerAdapter(private val listOfTopics: List<String>): RecyclerView.Adapter<TopicRecyclerAdapter.TopicViewHolder>() {
+class TopicRecyclerAdapter(private val listOfTopics: List<Topic>): RecyclerView.Adapter<TopicRecyclerAdapter.TopicViewHolder>() {
 
-    var onTopicClickedListener: ((position: Int, name: String) -> Unit)? = null
+    var onTopicClickedListener: ((topic: Topic) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewHolderType: Int): TopicViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.list_item_view, parent, false)
@@ -20,15 +20,15 @@ class TopicRecyclerAdapter(private val listOfTopics: List<String>): RecyclerView
     }
 
     override fun onBindViewHolder(viewHolder: TopicViewHolder, position: Int) {
-        viewHolder.bindView(listOfTopics[position], position)
+        viewHolder.bindView(listOfTopics[position])
     }
 
     inner class TopicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView(topicName: String, position: Int) {
-            itemView.topic_tv.text = topicName
+        fun bindView(topic: Topic) {
+            itemView.topic_tv.text = topic.title
 
             itemView.setOnClickListener {
-                onTopicClickedListener?.invoke(position, topicName)
+                onTopicClickedListener?.invoke(topic)
             }
         }
     }
