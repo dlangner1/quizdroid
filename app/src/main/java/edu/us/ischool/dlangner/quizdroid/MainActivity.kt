@@ -11,9 +11,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val listOfTopics = listOf("Math", "Physics", "Marvel Super Heroes")
+
+        val topicsAdapter = TopicRecyclerAdapter(listOfTopics)
+        // TODO: On Click, display a new activity to represent the first question
+        topicsAdapter.onTopicClickedListener = { position, name ->  
+            println()
+        }
+
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = topicsAdapter
+        recyclerView.setHasFixedSize(true)
     }
 }
