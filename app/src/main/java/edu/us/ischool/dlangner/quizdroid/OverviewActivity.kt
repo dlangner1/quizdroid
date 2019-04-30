@@ -32,6 +32,7 @@ class OverviewActivity : AppCompatActivity() {
             val intent = Intent(this, QuestionActivity::class.java)
             intent.putExtra("QUESTION_DATA", topic.questions)
             intent.putExtra("QUESTION_NUM", 0)
+            intent.putExtra("NUM_CORRECT", 0)
             startActivity(intent)
         }
     }

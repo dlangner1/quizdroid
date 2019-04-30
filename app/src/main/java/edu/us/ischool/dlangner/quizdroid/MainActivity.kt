@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         val topicsAdapter = TopicRecyclerAdapter(listOfTopics)
         topicsAdapter.onTopicClickedListener = { topic ->
-            val intent = Intent(this, OverviewActivity::class.java)
+            val intent = Intent(this@MainActivity, OverviewActivity::class.java)
             intent.putExtra("TOPIC_DATA", topic)
             startActivity(intent)
         }
