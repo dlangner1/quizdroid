@@ -29,11 +29,12 @@ class OverviewActivity : AppCompatActivity() {
 
         val startQuizButton = findViewById<Button>(R.id.start_quiz_button)
         startQuizButton.setOnClickListener {
-            val intent = Intent(this, QuestionActivity::class.java)
+            val intent = Intent(this@OverviewActivity, QuestionActivity::class.java)
             intent.putExtra("QUESTION_DATA", topic.questions)
             intent.putExtra("QUESTION_NUM", 0)
             intent.putExtra("NUM_CORRECT", 0)
             startActivity(intent)
+            finish()
         }
     }
 }

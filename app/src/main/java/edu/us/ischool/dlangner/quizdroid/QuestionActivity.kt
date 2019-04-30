@@ -14,16 +14,15 @@ class QuestionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
 
-
         val questions = intent.extras.get("QUESTION_DATA") as ArrayList<Question>
         val currentQuestionNum = intent.extras.get("QUESTION_NUM") as Int
 
         val currentQuestion = questions[currentQuestionNum]
 
-        populateQuestionView(currentQuestion)
+        populateQuestionView(currentQuestion, currentQuestionNum, questions)
     }
 
-    private fun populateQuestionView(question: Question) {
+    private fun populateQuestionView(question: Question, currentQuestionNum: Int, questions: ArrayList<Question>) {
         val numCorrect = intent.extras.get("NUM_CORRECT") as Int
         val possibleAnswers = question.possibleAnswers
 
@@ -58,7 +57,10 @@ class QuestionActivity : AppCompatActivity() {
             val answer = Answer(userAnswerText.toString(), correctAnswerText, currNumCorrect)
             val intent = Intent(this@QuestionActivity, AnswerActivity::class.java)
             intent.putExtra("ANSWER_DATA", answer)
+            intent.putExtra("QUESTION_DATA", questions)
+            intent.putExtra("QUESTION_NUM", currentQuestionNum)
             startActivity(intent)
+            finish()
         }
 
         radioGroup.setOnCheckedChangeListener(
