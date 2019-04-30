@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,12 +22,9 @@ class MainActivity : AppCompatActivity() {
         )
 
         val topicsAdapter = TopicRecyclerAdapter(listOfTopics)
-        // TODO: On Click, display a new activity to represent the first question
         topicsAdapter.onTopicClickedListener = { topic ->
             val intent = Intent(this, OverviewActivity::class.java)
-
             intent.putExtra("TOPIC_DATA", topic)
-
             startActivity(intent)
         }
 
@@ -38,20 +34,20 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
     }
 
-    private fun createListOfQuestionsForTopics(): List<List<Question>> {
-        var topicQuestions: MutableList<List<Question>> = mutableListOf()
+    private fun createListOfQuestionsForTopics(): List<ArrayList<Question>> {
+        var topicQuestions: MutableList<ArrayList<Question>> = mutableListOf()
 
-        val mathQuestions = listOf(
+        val mathQuestions = arrayListOf(
             Question("What is 2 + 2?", listOf("4", "27", "8", "Who knows?"), 0),
             Question("What is 200 / 4?", listOf("25", "400", "50", "15"), 2)
         )
 
-        val physicsQuestions = listOf(
+        val physicsQuestions = arrayListOf(
             Question("Which of these has both magnitude and direction?",
                 listOf("A scalar", "A vector", "An arrow", "A pointy thingy?"), 1)
         )
 
-        val marvelQuestions = listOf(
+        val marvelQuestions = arrayListOf(
             Question("What is the name of that one big green dude?",
                 listOf("Mark Ruffalo", "Big Green", "Edward Norton", "The Hulk"), 3)
         )

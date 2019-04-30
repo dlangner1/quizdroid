@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".OverviewActivity">
         </activity>
+        <activity android:name=".QuestionActivity">
+        </activity>
     </application>
 
 </manifest>
