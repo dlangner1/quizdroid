@@ -33,7 +33,7 @@ class OverviewFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(questions: ArrayList<Question>)
+        fun onBeginButtonPressed(questions: ArrayList<Question>)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,9 +73,8 @@ class OverviewFragment : Fragment() {
         return rootView
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     private fun onBeginQuizPressed(questions: ArrayList<Question>) {
-        listener?.onFragmentInteraction(questions)
+        listener?.onBeginButtonPressed(questions)
     }
 
     override fun onAttach(context: Context) {
@@ -83,7 +82,7 @@ class OverviewFragment : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException(context.toString().plus(" must implement OnFragmentInteractionListener"))
         }
     }
 
