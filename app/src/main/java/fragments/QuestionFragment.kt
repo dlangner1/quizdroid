@@ -1,7 +1,6 @@
-package edu.us.ischool.dlangner.quizdroid
+package fragments
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -11,10 +10,9 @@ import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import models.Question
+import edu.us.ischool.dlangner.quizdroid.R
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val QUESTION = "question"
 
 /**
@@ -27,10 +25,8 @@ private const val QUESTION = "question"
  *
  */
 class QuestionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var question: Question? = null
     private var listener: OnFragmentInteractionListener? = null
-
 
     /**
      * This interface must be implemented by activities that contain this
@@ -39,10 +35,8 @@ class QuestionFragment : Fragment() {
      * activity.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onSubmitAnswerPressed(userAnswer: String)
+        fun onSubmitAnswerButtonPressed(userAnswer: String)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +87,7 @@ class QuestionFragment : Fragment() {
     }
 
     private fun onSubmitButtonPressed(userAnswer: String) {
-        listener?.onSubmitAnswerPressed(userAnswer)
+        listener?.onSubmitAnswerButtonPressed(userAnswer)
     }
 
     override fun onAttach(context: Context) {
@@ -112,7 +106,7 @@ class QuestionFragment : Fragment() {
 
     companion object {
         /**
-         * @param param1 Parameter 1.
+         * @param question The given question for the quiz.
          * @return A new instance of fragment QuestionFragment.
          */
         @JvmStatic

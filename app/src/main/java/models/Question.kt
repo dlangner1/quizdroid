@@ -1,4 +1,4 @@
-package edu.us.ischool.dlangner.quizdroid
+package models
 
 import java.io.Serializable
 

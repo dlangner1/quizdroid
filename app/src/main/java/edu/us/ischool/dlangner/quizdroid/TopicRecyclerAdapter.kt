@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
 import kotlinx.android.synthetic.main.list_item_view.view.*
+import models.Topic
 
 class TopicRecyclerAdapter(private val listOfTopics: List<Topic>): RecyclerView.Adapter<TopicRecyclerAdapter.TopicViewHolder>() {
 

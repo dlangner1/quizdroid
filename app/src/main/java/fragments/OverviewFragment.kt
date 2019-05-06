@@ -1,4 +1,4 @@
-package edu.us.ischool.dlangner.quizdroid
+package fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import models.Question
+import edu.us.ischool.dlangner.quizdroid.R
+import models.Topic
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val TOPIC = "topic"

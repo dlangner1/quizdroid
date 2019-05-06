@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import models.Question
+import models.Topic
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,9 +18,15 @@ class MainActivity : AppCompatActivity() {
 
         val listOfTopics = listOf(
             Topic("Math", "Did you pass the third grade?", listOfQuestions[0]),
-            Topic("Physics", "Some of the most hard hitting, " +
-                    "and not harding hitting, questions about PHYSICS", listOfQuestions[1]),
-            Topic("Marvel Super Heroes", "Did you even watch the Avengers?", listOfQuestions[2])
+            Topic(
+                "Physics", "Some of the most hard hitting, " +
+                        "and not harding hitting, questions about PHYSICS", listOfQuestions[1]
+            ),
+            Topic(
+                "Marvel Super Heroes",
+                "Did you even watch the Avengers?",
+                listOfQuestions[2]
+            )
         )
 
         val topicsAdapter = TopicRecyclerAdapter(listOfTopics)
@@ -43,13 +51,17 @@ class MainActivity : AppCompatActivity() {
         )
 
         val physicsQuestions = arrayListOf(
-            Question("Which of these has both magnitude and direction?",
-                listOf("A scalar", "A vector", "An arrow", "A pointy thingy?"), 1)
+            Question(
+                "Which of these has both magnitude and direction?",
+                listOf("A scalar", "A vector", "An arrow", "A pointy thingy?"), 1
+            )
         )
 
         val marvelQuestions = arrayListOf(
-            Question("What is the name of that one big green dude?",
-                listOf("Mark Ruffalo", "Big Green", "Edward Norton", "The Hulk"), 3)
+            Question(
+                "What is the name of that one big green dude?",
+                listOf("Mark Ruffalo", "Big Green", "Edward Norton", "The Hulk"), 3
+            )
         )
 
         topicQuestions.add(mathQuestions)

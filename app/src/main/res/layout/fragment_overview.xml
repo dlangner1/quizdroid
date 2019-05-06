@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context=".OverviewFragment">
+              tools:context="fragments.OverviewFragment">
     <TextView
             android:id="@+id/topic_title_label"
             android:text="TextView"
