@@ -1,36 +1,35 @@
-package edu.us.ischool.dlangner.quizdroid
+package activities
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import edu.us.ischool.dlangner.quizdroid.QuizApp
+import edu.us.ischool.dlangner.quizdroid.R
 import fragments.AnswerFragment
 import fragments.OverviewFragment
 import fragments.QuestionFragment
 import models.Answer
 import models.Question
-import models.Topic
 
 private const val OVERVIEW_FRAGMENT_TAG = "OVERVIEW_FRAGMENT_TAG"
 private const val QUESTION_FRAGMENT_TAG = "QUESTION_FRAGMENT_TAG"
 private const val ANSWER_FRAGMENT_TAG = "ANSWER_FRAGMENT_TAG"
-
-private const val QUESTIONS = "QUESTIONS"
-private const val QUESTION_NUM = "QUESTION_NUM"
-private const val NUM_CORRECT = "NUM_CORRECT"
 
 class QuizActivity : AppCompatActivity(),
     OverviewFragment.OnFragmentInteractionListener,
     QuestionFragment.OnFragmentInteractionListener,
     AnswerFragment.OnFragmentInteractionListener {
 
-    private var savedInstanceState: Bundle? = null
+    private lateinit var topicName: String
+    var questionNum = 0
+    var numCorrect = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
-        this.savedInstanceState = Bundle()
+        topicName = intent.extras.get("TOPIC") as String
 
-        val topic = intent.extras.get("TOPIC_DATA") as Topic
+        val topic = QuizApp.sharedInstance.topicRepository.getTopicWithName(topicName)
 
         val overviewFragment = OverviewFragment.newInstance(topic)
         supportFragmentManager.beginTransaction().run {
@@ -44,10 +43,6 @@ class QuizActivity : AppCompatActivity(),
 
     //region Fragment Listener callbacks
     override fun onBeginButtonPressed(questions: ArrayList<Question>) {
-        savedInstanceState?.putSerializable(QUESTIONS, questions)
-        savedInstanceState?.putInt(QUESTION_NUM, 0)
-        savedInstanceState?.putInt(NUM_CORRECT, 0)
-
         val questionFragment = QuestionFragment.newInstance(questions[0])
         supportFragmentManager.beginTransaction().run {
             replace(
@@ -59,27 +54,24 @@ class QuizActivity : AppCompatActivity(),
     }
 
     override fun onSubmitAnswerButtonPressed(userAnswer: String) {
-        val questions =savedInstanceState?.getSerializable(QUESTIONS) as ArrayList<Question>
-        val questionNum = savedInstanceState?.getInt(QUESTION_NUM) as Int
-        val currentNumCorrect = savedInstanceState?.getInt(NUM_CORRECT) as Int
-
+        val questions = QuizApp.sharedInstance.topicRepository.getQuestions(topicName)
         val currentQuestion = questions[questionNum]
         val correctAnswer = currentQuestion.possibleAnswers[currentQuestion.correctAnswer]
 
         // Update questionNum
-        val nextQuestionNum = questionNum + 1
-        savedInstanceState?.putInt(QUESTION_NUM, nextQuestionNum)
+        questionNum += 1
 
-        // update Num correct
-        val newNumCorrect = if (userAnswer == correctAnswer) currentNumCorrect + 1 else currentNumCorrect
-        savedInstanceState?.putInt(NUM_CORRECT, newNumCorrect)
+        // update Num correct if neccessary
+        if (userAnswer == correctAnswer) {
+            this.numCorrect += 1
+        }
 
         // Create answer fragment and replace current fragment in container
         val answer = Answer(
             userAnswer,
             correctAnswer,
-            newNumCorrect,
-            nextQuestionNum,
+            this.numCorrect,
+            this.questionNum,
             questions.size
         )
         val answerFragment = AnswerFragment.newInstance(answer)
@@ -97,11 +89,10 @@ class QuizActivity : AppCompatActivity(),
         if (isQuizFinished) {
             finish()
         } else { // Otherwise, show next question
-            val questions = savedInstanceState?.getSerializable(QUESTIONS) as ArrayList<Question>
-            val questionNum = savedInstanceState?.getInt(QUESTION_NUM) as Int
+            val questions = QuizApp.sharedInstance.topicRepository.getQuestions(this.topicName)
 
             val questionFragment =
-                QuestionFragment.newInstance(questions[questionNum])
+                QuestionFragment.newInstance(questions[this.questionNum])
             supportFragmentManager.beginTransaction().run {
                 replace(
                     R.id.quiz_container, questionFragment,

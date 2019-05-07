@@ -13,15 +13,6 @@ import edu.us.ischool.dlangner.quizdroid.R
 
 private const val ANSWER = "ANSWER"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [AnswerFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [AnswerFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class AnswerFragment : Fragment() {
     private var answer: Answer? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -34,6 +25,20 @@ class AnswerFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         fun onNextOrFinishButtonPressed(isQuizFinished: Boolean)
+    }
+
+    companion object {
+        /**
+         * @param answer Answer data about the question at hand.
+         * @return A new instance of fragment AnswerFragment.
+         */
+        @JvmStatic
+        fun newInstance(answer: Answer) =
+            AnswerFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(ANSWER, answer)
+                }
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,19 +96,5 @@ class AnswerFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
-
-    companion object {
-        /**
-         * @param answer Answer data about the question at hand.
-         * @return A new instance of fragment AnswerFragment.
-         */
-        @JvmStatic
-        fun newInstance(answer: Answer) =
-            AnswerFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(ANSWER, answer)
-                }
-            }
     }
 }

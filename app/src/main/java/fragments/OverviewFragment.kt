@@ -15,15 +15,6 @@ import models.Topic
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val TOPIC = "topic"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [OverviewFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [OverviewFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class OverviewFragment : Fragment() {
     private var topic: Topic? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -35,8 +26,21 @@ class OverviewFragment : Fragment() {
      * activity.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onBeginButtonPressed(questions: ArrayList<Question>)
+    }
+
+    companion object {
+        /**
+         * @param topic The quiz topic selected.
+         * @return A new instance of fragment OverviewFragment.
+         */
+        @JvmStatic
+        fun newInstance(topic: Topic) =
+            OverviewFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(TOPIC, topic)
+                }
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +62,7 @@ class OverviewFragment : Fragment() {
         topicTitleView.text = topic?.title
 
         val topicDescriptionView = rootView.findViewById<TextView>(R.id.topic_description_label)
-        topicDescriptionView.text = topic?.description
+        topicDescriptionView.text = topic?.longDescription
 
         val numOfQuestions = rootView.findViewById<TextView>(R.id.topic_num_questions_label)
 
@@ -92,19 +96,5 @@ class OverviewFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
-
-    companion object {
-        /**
-         * @param topic The quiz topic selected.
-         * @return A new instance of fragment OverviewFragment.
-         */
-        @JvmStatic
-        fun newInstance(topic: Topic) =
-            OverviewFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(TOPIC, topic)
-                }
-            }
     }
 }

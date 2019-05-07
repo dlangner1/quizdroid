@@ -15,15 +15,6 @@ import edu.us.ischool.dlangner.quizdroid.R
 
 private const val QUESTION = "question"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [QuestionFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [QuestionFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class QuestionFragment : Fragment() {
     private var question: Question? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -36,6 +27,20 @@ class QuestionFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         fun onSubmitAnswerButtonPressed(userAnswer: String)
+    }
+
+    companion object {
+        /**
+         * @param question The given question for the quiz.
+         * @return A new instance of fragment QuestionFragment.
+         */
+        @JvmStatic
+        fun newInstance(question: Question) =
+            QuestionFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(QUESTION, question)
+                }
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,19 +107,5 @@ class QuestionFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
-
-    companion object {
-        /**
-         * @param question The given question for the quiz.
-         * @return A new instance of fragment QuestionFragment.
-         */
-        @JvmStatic
-        fun newInstance(question: Question) =
-            QuestionFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(QUESTION, question)
-                }
-            }
     }
 }

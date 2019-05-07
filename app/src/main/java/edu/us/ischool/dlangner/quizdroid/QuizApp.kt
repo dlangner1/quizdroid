@@ -5,13 +5,19 @@ import android.util.Log
 
 private const val QUIZ_APP = "QUIZ_APP"
 
-
 class QuizApp: Application() {
+    companion object {
+        lateinit var sharedInstance: QuizApp
+            private set
+    }
+
+    lateinit var topicRepository: TopicRepository
 
     override fun onCreate() {
         super.onCreate()
-        Log.i(QUIZ_APP, "Application override is connected!")
+        Log.i(QUIZ_APP, "Quiz App Application extension is connected!")
 
-
+        sharedInstance = this
+        topicRepository = TopicRepository()
     }
 }
