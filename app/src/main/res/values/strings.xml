@@ -2,5 +2,6 @@
     <string name="app_name">QuizDroid</string>
     <string name="begin">Begin</string>
     <string name="settings">Settings</string>
+    <string name="data_path">data_path</string>
 
 </resources>
