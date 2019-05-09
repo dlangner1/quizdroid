@@ -1,14 +1,15 @@
 package activities
 
+import adapters.TopicRecyclerAdapter
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import edu.us.ischool.dlangner.quizdroid.R
-import adapters.TopicRecyclerAdapter
 import android.view.Menu
+import android.view.MenuItem
 import edu.us.ischool.dlangner.quizdroid.QuizApp
+import edu.us.ischool.dlangner.quizdroid.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,5 +37,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_items, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
+
+        R.id.settings -> {
+            val intent = Intent(this@MainActivity, PreferencesActivity::class.java)
+            startActivity(intent)
+            true
+        }
+
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
     }
 }
