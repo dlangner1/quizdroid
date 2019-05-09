@@ -9,6 +9,7 @@ import fragments.OverviewFragment
 import fragments.QuestionFragment
 import models.Answer
 import models.Question
+import models.Topic
 
 private const val OVERVIEW_FRAGMENT_TAG = "OVERVIEW_FRAGMENT_TAG"
 private const val QUESTION_FRAGMENT_TAG = "QUESTION_FRAGMENT_TAG"
@@ -19,17 +20,15 @@ class QuizActivity : AppCompatActivity(),
     QuestionFragment.OnFragmentInteractionListener,
     AnswerFragment.OnFragmentInteractionListener {
 
-    private lateinit var topicName: String
-    var questionNum = 0
-    var numCorrect = 0
+    private lateinit var topic: Topic
+    private var questionNum = 0
+    private var numCorrect = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
-        topicName = intent.extras.get("TOPIC") as String
-
-        val topic = QuizApp.sharedInstance.topicRepository.getTopicWithName(topicName)
+        topic = intent.extras.get("TOPIC_DATA") as Topic
 
         val overviewFragment = OverviewFragment.newInstance(topic)
         supportFragmentManager.beginTransaction().run {
@@ -54,14 +53,14 @@ class QuizActivity : AppCompatActivity(),
     }
 
     override fun onSubmitAnswerButtonPressed(userAnswer: String) {
-        val questions = QuizApp.sharedInstance.topicRepository.getQuestions(topicName)
+        val questions = topic.questions
         val currentQuestion = questions[questionNum]
         val correctAnswer = currentQuestion.possibleAnswers[currentQuestion.correctAnswer]
 
         // Update questionNum
         questionNum += 1
 
-        // update Num correct if neccessary
+        // update Num correct if necessary
         if (userAnswer == correctAnswer) {
             this.numCorrect += 1
         }
@@ -89,7 +88,7 @@ class QuizActivity : AppCompatActivity(),
         if (isQuizFinished) {
             finish()
         } else { // Otherwise, show next question
-            val questions = QuizApp.sharedInstance.topicRepository.getQuestions(this.topicName)
+            val questions = topic.questions
 
             val questionFragment =
                 QuestionFragment.newInstance(questions[this.questionNum])

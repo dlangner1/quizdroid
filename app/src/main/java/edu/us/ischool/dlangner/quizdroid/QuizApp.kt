@@ -18,6 +18,6 @@ class QuizApp: Application() {
         Log.i(QUIZ_APP, "Quiz App Application extension is connected!")
 
         sharedInstance = this
-        topicRepository = TopicRepository()
+        topicRepository = TopicRepository(applicationContext)
     }
 }

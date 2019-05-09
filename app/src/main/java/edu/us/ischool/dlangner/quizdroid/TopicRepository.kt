@@ -1,7 +1,13 @@
 package edu.us.ischool.dlangner.quizdroid
 
+import android.content.Context
+import android.util.Log
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
 import models.Question
 import models.Topic
+import org.json.JSONArray
+import org.json.JSONObject
 
 const val MATH = "Math"
 const val PHYSICS = "Physics"
@@ -9,78 +15,85 @@ const val MARVEL_SUPER_HEROES = "Marvel Super Heroes"
 
 class TopicRepository {
 
-    private val topicToQuestions: Map<String, ArrayList<Question>>
-    private val mapOfTopics: Map<String, Topic>
+    var listOfTopics: List<Topic>
 
-    constructor() {
-        topicToQuestions = createListOfQuestions()
-        mapOfTopics = createTopics()
+    companion object {
+        const val JSON_FILE_PATH = "data/questions.json"
+
+        const val TITLE = "title"
+        const val DESCRIPTION = "desc"
+        const val QUESTIONS = "questions"
+
+        const val TEXT = "text"
+        const val ANSWER = "answer"
+        const val ANSWERS = "answers"
     }
 
-    fun getQuestions(topic: String): ArrayList<Question> {
-        return topicToQuestions.getValue(topic)
+    constructor(context: Context) {
+        val jsonArray = parseJson(context)
+        listOfTopics = createTopicModels(jsonArray)
     }
 
-    fun getTopicList(): List<Topic> {
-        return ArrayList(mapOfTopics.values)
+    private fun createTopicModels(jsonArray: JSONArray): List<Topic> {
+        var topics = arrayListOf<Topic>()
+
+        for (i in 0 until jsonArray.length()) {
+            val quizObject = jsonArray.get(i) as JSONObject
+
+            val topicTitle = quizObject.get(TITLE) as String
+            val desc = quizObject.get(DESCRIPTION) as String
+            val questionJsonObject = quizObject.get(QUESTIONS) as JSONArray
+
+            val questions = createQuestionModel(questionJsonObject)
+
+            val topic = Topic(topicTitle, "Take the quiz to find out", desc, questions)
+            topics.add(topic)
+        }
+        return topics
     }
 
-    fun getTopicWithName(name: String): Topic {
-        return mapOfTopics.getValue(name)
+    private fun createQuestionModel(questions: JSONArray): ArrayList<Question> {
+        val result = arrayListOf<Question>()
+
+        for (i in 0 until questions.length()) {
+
+            val question = questions.get(i) as JSONObject
+
+            val questionText = question.get(TEXT) as String
+            val correctAnswer = question.get(ANSWER) as String
+            val correctAnswerInt = (correctAnswer.toInt()) - 1
+
+            val jsonAnswers = question.get(ANSWERS) as JSONArray
+            val possibleAnswers = createAnswers(jsonAnswers)
+
+            result.add(Question(questionText, possibleAnswers, correctAnswerInt))
+        }
+        return result
     }
 
-    private fun createTopics(): Map<String, Topic> {
-        return mapOf(
-            MATH to
-            Topic(MATH,
-                "Did you pass the third grade?",
-                "Here are some of the easiest math questions that you will come across, " +
-                        "unless of course you are a child",
-                getQuestions(MATH)
-            ),
-            PHYSICS to
-            Topic(
-                PHYSICS,
-                "Test your physics knowledge!",
-                "Some of the most hard hitting, " +
-                        "and not harding hitting, questions about PHYSICS",
-                getQuestions(PHYSICS)
-            ),
-            MARVEL_SUPER_HEROES to
-            Topic(
-                MARVEL_SUPER_HEROES,
-                "Did you even watch the Avengers?",
-                "Your knowledge of the Marvel universe will be tested at the greatest lengths. " +
-                        "You have to be a REALLY big Marvel fan to answer these questions...maybe",
-                getQuestions(MARVEL_SUPER_HEROES)
-            )
-        )
+    private fun createAnswers(jsonAnswers: JSONArray): List<String> {
+        var possibleAnswers = arrayListOf<String>()
+
+        for (i in 0 until jsonAnswers.length()) {
+            possibleAnswers.add(jsonAnswers.get(i) as String)
+        }
+        return possibleAnswers
     }
 
-    private fun createListOfQuestions(): Map<String, ArrayList<Question>> {
-        val mathQuestions = arrayListOf(
-            Question("What is 2 + 2?", listOf("4", "27", "8", "Who knows?"), 0),
-            Question("What is 200 / 4?", listOf("25", "400", "50", "15"), 2)
-        )
+    private fun parseJson(context: Context): JSONArray {
+        val jsonString: String? = try {
+            // grab file from assets folder & read it to a String
+            val inputStream = context.assets.open(JSON_FILE_PATH)
+            val size = inputStream.available()
+            val buffer = ByteArray(size)
+            inputStream.read(buffer)
+            inputStream.close()
 
-        val physicsQuestions = arrayListOf(
-            Question(
-                "Which of these has both magnitude and direction?",
-                listOf("A scalar", "A vector", "An arrow", "A pointy thingy?"), 1
-            )
-        )
+            String(buffer, Charsets.UTF_8)
+        } catch (e: Exception) {
+            null
+        }
 
-        val marvelQuestions = arrayListOf(
-            Question(
-                "What is the name of that one big green dude?",
-                listOf("Mark Ruffalo", "Big Green Man", "Edward Norton", "The Hulk"), 3
-            )
-        )
-
-        return mapOf(
-            "Math" to mathQuestions,
-            "Physics" to physicsQuestions,
-            "Marvel Super Heroes" to marvelQuestions
-        )
+        return JSONArray(jsonString)
     }
 }

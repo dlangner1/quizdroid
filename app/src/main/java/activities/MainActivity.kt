@@ -15,12 +15,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val listOfTopics = QuizApp.sharedInstance.topicRepository.getTopicList()
+        val listOfTopics = QuizApp.sharedInstance.topicRepository.listOfTopics
 
         val topicsAdapter = TopicRecyclerAdapter(listOfTopics)
         topicsAdapter.onTopicClickedListener = { topic ->
             val intent = Intent(this@MainActivity, QuizActivity::class.java)
-            intent.putExtra("TOPIC", topic.title)
+            intent.putExtra("TOPIC_DATA", topic)
             startActivity(intent)
         }
 
