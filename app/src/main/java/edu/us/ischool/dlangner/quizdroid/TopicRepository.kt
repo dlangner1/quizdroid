@@ -1,17 +1,10 @@
 package edu.us.ischool.dlangner.quizdroid
 
 import android.content.Context
-import android.util.Log
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonArray
 import models.Question
 import models.Topic
 import org.json.JSONArray
 import org.json.JSONObject
-
-const val MATH = "Math"
-const val PHYSICS = "Physics"
-const val MARVEL_SUPER_HEROES = "Marvel Super Heroes"
 
 class TopicRepository {
 

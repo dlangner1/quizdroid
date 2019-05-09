@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import edu.us.ischool.dlangner.quizdroid.R
 import adapters.TopicRecyclerAdapter
+import android.view.Menu
 import edu.us.ischool.dlangner.quizdroid.QuizApp
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +15,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setSupportActionBar(findViewById(R.id.my_toolbar))
 
         val listOfTopics = QuizApp.sharedInstance.topicRepository.listOfTopics
 
@@ -28,5 +31,10 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = topicsAdapter
         recyclerView.setHasFixedSize(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_items, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 }
