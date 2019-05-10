@@ -76,7 +76,13 @@ class TopicRepository {
     private fun parseJson(context: Context): JSONArray {
         val jsonString: String? = try {
             // grab file from assets folder & read it to a String
-            val inputStream = context.assets.open(JSON_FILE_PATH)
+
+            val sharedPreferences = context.getSharedPreferences("USER_PREFERENCES_KEY", Context.MODE_PRIVATE)
+            val default = "questions.json"
+
+            val path = "data/".plus(sharedPreferences.getString("data_path", default))
+
+            val inputStream = context.assets.open(path)
             val size = inputStream.available()
             val buffer = ByteArray(size)
             inputStream.read(buffer)

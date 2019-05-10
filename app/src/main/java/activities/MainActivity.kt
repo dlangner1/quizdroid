@@ -1,7 +1,9 @@
 package activities
 
 import adapters.TopicRecyclerAdapter
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -13,9 +15,22 @@ import edu.us.ischool.dlangner.quizdroid.R
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var sharedPreferences: SharedPreferences
+
+    companion object {
+        private const val USER_PREF_KEY = "USER_PREFERENCES_KEY"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        sharedPreferences = getSharedPreferences(USER_PREF_KEY, Context.MODE_PRIVATE)
+        // set initial file preferences
+        sharedPreferences
+            .edit()
+            .putString(R.string.data_path.toString(), "questions.json")
+            .apply()
 
         setSupportActionBar(findViewById(R.id.my_toolbar))
 
@@ -40,7 +55,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
-
         R.id.settings -> {
             val intent = Intent(this@MainActivity, PreferencesActivity::class.java)
             startActivity(intent)

@@ -4,7 +4,14 @@
 
     <EditTextPreference
         android:key="data_path"
-        android:title="Data File"
+        android:title="Desired Data File"
+        android:defaultValue="questions.json"
+    />
+
+    <EditTextPreference
+            android:key="download_time"
+            android:title="When To Check For New Content"
+            android:defaultValue="0"
     />
 
 </PreferenceScreen>
